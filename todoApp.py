@@ -23,7 +23,7 @@ class TaskApp(ft.UserControl):
         
     
 
-class Task(ft.UserControl):
+class   Task(ft.UserControl):
     def __init__(self, taskName, taskDelete):
         super().__init__()
         self.taskName = taskName
@@ -76,7 +76,7 @@ def main(page: ft.page):
     page.bgcolor = "grey"
 
     page.add(TaskApp())
-    page.update
+    page.update()
 
 
 ft.app(target=main)
