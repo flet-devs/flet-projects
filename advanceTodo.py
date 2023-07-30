@@ -1,4 +1,9 @@
 import flet as ft
+import sqlite3
+
+dbase = sqlite3.Connection("database.db")
+cursor = dbase.cursor()
+
 
 
 def main(page: ft.Page):
@@ -23,6 +28,33 @@ def main(page: ft.Page):
             1, alignment=ft.alignment.center_right
         )
         page.update()
+    def add_to_db(self):
+        task = create_task_view.content.controls[2].content.controls[0].value
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY, 
+        username VARCHAR(250)
+        );  
+        """)
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS tASKS (
+        id INTEGER PRIMAKY KEY,
+        task VARCHAR(255),
+        date_created DATETIME DEFAULT (NOW()),
+        poster_id INTEGER,
+        FOREIGN KEY (poster_id) REFERENCES users (id)
+                   );
+               """)
+        cursor.execute(f"""
+            INSERT INTO tasks (
+                id, 
+                task, 
+                date_created, 
+                poster_id
+                ) 
+                VALUES (task={task},)
+            
+               """)
 
     tasks = ft.Column(height=300, scroll="auto",)
     for i in range(10):
@@ -43,11 +75,11 @@ def main(page: ft.Page):
                 ),
             ),
         )
-        
+
     create_task_view = ft.Container(
         width=400,
         height=750,
-        bgcolor=PINK,
+        bgcolor=FG,
         border_radius=25,
         content=ft.Column(
             controls=[
@@ -58,25 +90,24 @@ def main(page: ft.Page):
                     margin=5,
                     content=ft.IconButton(icon=ft.icons.CLOSE),
                 ),
+                ft.Container(height=30),
                 ft.Container(
                     margin=5,
                     content=ft.Row(
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                         controls=[
                             ft.TextField(),
-                            ft.FloatingActionButton(icon=ft.icons.ADD),
+                            ft.FloatingActionButton(icon=ft.icons.ADD, on_click=add_to_db),
                         ],
                     ),
                 ),
+                ft.Container(height=30),
                 ft.Container(
                     margin=5,
-                    content=ft.Row(
-                        width=400,
-                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                        controls=[
-                            tasks,
-                            ft.Icon(name=ft.icons.EDIT),
-                        ],
+                    content=ft.Container(
+                        content=
+                            tasks
+                            
                     ),
                 ),
             ]
