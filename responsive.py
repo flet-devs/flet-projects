@@ -1,6 +1,5 @@
 import flet as ft
 
-
 class DashApp(ft.UserControl):
     def __init__(self):
         super().__init__()
@@ -113,6 +112,7 @@ class DashApp(ft.UserControl):
                             
                             controls=[
                                  ft.Column(
+            
                            scroll="auto",
                             controls=[
                             
@@ -191,7 +191,8 @@ class DashApp(ft.UserControl):
 def main(page: ft.Page):
     page.title = "Flet Responsive"
     page.bgcolor = ft.colors.GREY_300
-
+    page.window_min_height = 200
+    page.scroll =  "auto"
     page.add(DashApp())
 
 
